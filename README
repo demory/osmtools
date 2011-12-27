@@ -1,0 +1,11 @@
+This library contains the following OSM-related tools:
+
+* Osmosis extraction polygon generator -- creates an Osmmosis polygon file by buffering transit stops specified input GTFS feed(s). The tool reads from a local directory containing one or more GTFS stops files (every file in the directory is assumed to be a stops file).
+
+  Usage: osmtools.PolyGen /path/to/stops_dir/ output_poly_file
+  
+  
+* Way Splitter -- converts an osm file to a JGraphT PseudoGraph, splitting ways as appropriate. Also allows for reprojection from the default OSM CRS to any specified destination CRS.
+  
+  Usage: osmtools.GraphSplitter path/to/file.osm destCRScode 
+
