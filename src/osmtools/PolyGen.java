@@ -28,12 +28,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Usage: PolyGen path/to/stops_dir output_poly_file
+ *
  * @author demory
  */
 public class PolyGen {
   public static void main(String[] args) {
     
+    if(args.length < 2) {
+      System.out.println("Usage: osmtools.PolyGen stopsdir polygonfile [boundsfile]");
+      System.exit(0);
+    }
     CoordConverter cc = new CoordLatLonConverter();
     GTFSStopLoader stopLoader = new GTFSStopLoader();
 
@@ -63,9 +67,11 @@ public class PolyGen {
     System.out.println("type="+mainPoly.getGeometryType());
 
 
+    double minX = 180, minY = 90, maxX = -180, maxY = -90;
+    
     try {
       FileWriter writer = new FileWriter(args[1]);
-      writer.write("pacificnw\n");
+      writer.write("extract\n");
 
       Set<Polygon> polys = new HashSet<Polygon>();
 
@@ -83,6 +89,10 @@ public class PolyGen {
         writer.write((polyId++)+"\n");
         for(Coordinate coord : poly.getExteriorRing().getCoordinates()) {
           writer.write("    "+coord.x+"    "+coord.y+"\n");
+          minX = Math.min(minX, coord.x);
+          minY = Math.min(minY, coord.y);
+          maxX = Math.max(maxX, coord.x);
+          maxY = Math.max(maxY, coord.y);
         }
         writer.write("END\n");
 
@@ -98,6 +108,16 @@ public class PolyGen {
       }
       writer.write("END\n");
       writer.close();
+      
+      System.out.println("x range: "+minX+" to "+maxX);
+      System.out.println("y range: "+minY+" to "+maxY);
+
+      if(args.length > 2) {
+        writer = new FileWriter(args[2]);
+        writer.write(minX+","+maxX+","+minY+","+maxY);
+        writer.close();
+      }
+      
     } catch (IOException ex) {
       ex.printStackTrace();
     }
