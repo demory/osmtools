@@ -1,8 +1,12 @@
 This library contains the following OSM-related tools:
 
-* Osmosis extraction polygon generator -- creates an Osmmosis polygon file by buffering transit stops specified input GTFS feed(s). The tool reads from a local directory containing one or more GTFS stops files (every file in the directory is assumed to be a stops file).
+* Osmosis extraction polygon generator -- creates an Osmosis polygon file by buffering transit stops specified input GTFS feed(s). The tool reads from a local directory containing one or more GTFS stops files (every file in the directory is assumed to be a stops file).
 
   Usage: osmtools.PolyGen /path/to/stops_dir/ output_poly_file
+  
+The polygon generator can also optionally generate a text file containing the rectagular bounding box of the polygon as a simple comma-separated list (minX, maxX, minY, maxY). To enable, specific a bounding box file as an additional argument:
+
+  Usage: osmtools.PolyGen /path/to/stops_dir/ output_poly_file output_bbox_file
   
   
 * Way Splitter -- converts an osm file to a JGraphT PseudoGraph, splitting ways as appropriate. Also allows for reprojection from the default OSM CRS to any specified destination CRS.
