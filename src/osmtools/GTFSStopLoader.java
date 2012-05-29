@@ -56,10 +56,15 @@ public class GTFSStopLoader {
 
       Map<Integer, Map<Integer,Point2D>> workingMap = new HashMap<Integer, Map<Integer, Point2D>>();
       while((line = reader.readLine()) != null) {
-        String[] split = stripQuotedCommas(line).split(",");
-        String stopID = split[0];
-        Point2D pt = cc.convert(new Point2D.Double(Double.parseDouble(split[latIndex]), Double.parseDouble(split[lonIndex])));
-        stopMap.put(stopID, pt);
+        try {
+          String[] split = stripQuotedCommas(line).split(",");
+          String stopID = split[0];
+          Point2D pt = cc.convert(new Point2D.Double(Double.parseDouble(split[latIndex]), Double.parseDouble(split[lonIndex])));
+          stopMap.put(stopID, pt);
+        } catch(Exception ex) {
+          System.out.println("error reading line: "+line);  
+          System.out.println("  "+ex.toString());
+        }
       }
 
       return stopMap;
