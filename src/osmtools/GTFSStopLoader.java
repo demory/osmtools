@@ -48,8 +48,9 @@ public class GTFSStopLoader {
       line = reader.readLine(); // read the header line
       String[] splitHeader = line.split(",");
 
-      int latIndex=0, lonIndex=0;
+      int idIndex=0, latIndex=0, lonIndex=0;
       for(int i=0; i<splitHeader.length; i++) {
+        if(splitHeader[i].contains("stop_id")) idIndex = i;
         if(splitHeader[i].contains("stop_lat")) latIndex = i;
         if(splitHeader[i].contains("stop_lon")) lonIndex = i;
       }
@@ -58,7 +59,7 @@ public class GTFSStopLoader {
       while((line = reader.readLine()) != null) {
         try {
           String[] split = stripQuotedCommas(line).split(",");
-          String stopID = split[0];
+          String stopID = split[idIndex];
           Point2D pt = cc.convert(new Point2D.Double(Double.parseDouble(split[latIndex]), Double.parseDouble(split[lonIndex])));
           stopMap.put(stopID, pt);
         } catch(Exception ex) {
